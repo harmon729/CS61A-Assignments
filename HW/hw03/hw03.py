@@ -24,7 +24,11 @@ def num_eights(n):
     ...       ['Assign', 'AnnAssign', 'AugAssign', 'NamedExpr', 'For', 'While'])
     True
     """
-    "*** YOUR CODE HERE ***"
+    if n == 0:
+        return 0
+    if n % 10 == 8:
+        return num_eights(n // 10) + 1
+    return num_eights(n // 10)
 
 
 def digit_distance(n):
@@ -46,7 +50,9 @@ def digit_distance(n):
     ...       ['For', 'While'])
     True
     """
-    "*** YOUR CODE HERE ***"
+    if n < 10:
+        return 0
+    return digit_distance(n // 10) + abs(n % 10 - n // 10 % 10)
 
 
 def interleaved_sum(n, odd_func, even_func):
@@ -70,7 +76,13 @@ def interleaved_sum(n, odd_func, even_func):
     >>> check(HW_SOURCE_FILE, 'interleaved_sum', ['BitAnd', 'BitOr', 'BitXor']) # ban bitwise operators, don't worry about these if you don't know what they are
     True
     """
-    "*** YOUR CODE HERE ***"
+    def f(x):
+        if x > n:
+            return 0
+        if x + 1 > n:
+            return odd_func(x)
+        return f(x + 2) + odd_func(x) + even_func(x + 1)
+    return f(1)
 
 
 def next_smaller_dollar(bill):
@@ -106,7 +118,15 @@ def count_dollars(total):
     >>> check(HW_SOURCE_FILE, 'count_dollars', ['While', 'For'])
     True
     """
-    "*** YOUR CODE HERE ***"
+    def f(n, m):
+        if n < 0:
+            return 0
+        if n == 0:
+            return 1
+        if m == 1:
+            return f(n - m, m)
+        return f(n - m, m) + f(n, next_smaller_dollar(m))
+    return f(total, 100)
 
 
 def next_larger_dollar(bill):
@@ -142,7 +162,15 @@ def count_dollars_upward(total):
     >>> check(HW_SOURCE_FILE, 'count_dollars_upward', ['While', 'For'])
     True
     """
-    "*** YOUR CODE HERE ***"
+    def f(n, m):
+        if n > total:
+            return 0
+        if n == total:
+            return 1
+        if m == 100:
+            return f(n + m, m)
+        return f(n + m, m) + f(n, next_larger_dollar(m))
+    return f(0, 1)
 
 
 def print_move(origin, destination):
@@ -177,7 +205,12 @@ def move_stack(n, start, end):
     Move the top disk from rod 1 to rod 3
     """
     assert 1 <= start <= 3 and 1 <= end <= 3 and start != end, "Bad start/end"
-    "*** YOUR CODE HERE ***"
+    if n == 1:
+        print_move(start, end)
+    else:
+        move_stack(n - 1, start, 6 - start - end)
+        move_stack(1, start, end)
+        move_stack(n - 1, 6 - start - end, end)
 
 
 from operator import sub, mul
@@ -193,5 +226,4 @@ def make_anonymous_factorial():
     ...     ['Assign', 'AnnAssign', 'AugAssign', 'NamedExpr', 'FunctionDef', 'Recursion'])
     True
     """
-    return 'YOUR_EXPRESSION_HERE'
-
+    return (lambda f: (lambda x: x(x))(lambda y: f(lambda *args: y(y)(*args))))(lambda f: lambda n: 1 if n == 0 else n * f(n - 1))
