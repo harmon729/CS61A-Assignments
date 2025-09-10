@@ -237,7 +237,7 @@ def is_always_roll(strategy, goal=GOAL):
     # END PROBLEM 7
 
 
-def make_averaged(original_function, times_called=10000):
+def make_averaged(original_function, times_called=1000):
     """Return a function that returns the average value of ORIGINAL_FUNCTION
     called TIMES_CALLED times.
 
@@ -342,9 +342,9 @@ def final_strategy(score, opponent_score):
     *** YOUR DESCRIPTION HERE ***
     """
     # BEGIN PROBLEM 12
-    if sus_update(0, score, opponent_score) - score >= 3.5:
+    if sus_update(0, score, opponent_score) - score >= 9:
         return 0
-    return 7
+    return 4
     # END PROBLEM 12
 
 
